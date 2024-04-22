@@ -291,7 +291,26 @@ int deleteNode(headNode* h, int key) {
  * list의 마지막 노드 삭제
  */
 int deleteLast(headNode* h) {
-
+    if (h->first == NULL) {
+        //노드가 없으면 아무런 동작 안함
+        return 0;
+    }else if (h->first->link == NULL) {
+        //노드 하나가 다일 경우 하나의 노드 삭제
+        free(h->first);
+        h->first = NULL;
+    }else {
+        //노드가 두개 이상일 경우
+        listNode* compareNode = h->first;
+        while(1) {
+            if (compareNode->link->link == NULL) {
+                listNode* temp = compareNode->link;
+                compareNode->link = NULL;
+                free(temp);
+                break;
+            }
+            compareNode = compareNode->link;
+        }
+    }
 	return 0;
 }
 
