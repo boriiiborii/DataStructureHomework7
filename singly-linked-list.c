@@ -41,7 +41,9 @@ int main()
 {
 	char command;
 	int key;
-	headNode* headnode=NULL;
+	headNode* headnode = NULL;
+    headnode = initialize(headnode);
+    
 
 	do{
         printf("[----- [hwajinLee]  [2020037103] -----]\n");
@@ -223,8 +225,19 @@ int insertLast(headNode* h, int key) {
  * list의 첫번째 노드 삭제
  */
 int deleteFirst(headNode* h) {
-
-
+//노드가 없을 경우 print만 찍어주고 넘기기
+    if (h->first == NULL) {
+        printf("삭제할 노드가 없음");
+    }else if (h->first->link == NULL) {
+        //노드가 하나라면 삭제시키고 연결끊기
+        free(h->first);
+        h->first = NULL;
+    }else {
+        //노드가 여러개라면, 헤드를 두번쨰 노드와 연결시키고 첫번째 노드 삭제해야함
+        listNode* twoNode = h->first->link;
+        free(h->first);
+        h->first = twoNode;
+    }   
 	return 0;
 }
 
