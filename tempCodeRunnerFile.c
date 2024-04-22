@@ -1,1 +1,1 @@
-getInfix();
+

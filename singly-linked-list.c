@@ -144,7 +144,10 @@ int insertFirst(headNode* h, int key) {
 	listNode* node = (listNode*)malloc(sizeof(listNode));
 	node->key = key;
 
-	node->link = h->first;
+	node->link = h->first; // h->first는 시작했을때 맨 첫번쨰 노드를 가르키는데, 아무것도 없다면 null일테고 
+    //노드가 존재한다면 그 노드를 내가 생성한 node의 link로 이어주는 코드임
+
+    //그리고 맨 첫번째 노드를 방금 생성했던 노드로 꼽아주는것
 	h->first = node;
 
 	return 0;
@@ -153,7 +156,39 @@ int insertFirst(headNode* h, int key) {
 
 /* 리스트를 검색하여, 입력받은 key보다 큰값이 나오는 노드 바로 앞에 삽입 */
 int insertNode(headNode* h, int key) {
-
+    if (h->first == NULL) {
+        //노드가 없는 상태라면 insertFirst와 같은 동작을 함으로 
+        insertFirst(h, key);
+    }else if (h->first->link == NULL) {
+        //노드의 갯수가 하나밖에 없을땐 first랑만 배교해야함 (다음 else if문부터는 2개 이상이라 가정하고 노드링크의 노드를 확인할 예정)
+        if (h->first->key > key) {
+            //헤드 키가 key보다 크다면 맨 앞으로 insert되야하니까 >> 뒤에꺼를 확인하고 크다면 앞에거랑 이어야하기때문에 노드링크에 노드를 확인함
+            insertFirst(h, key);
+        }else {
+            listNode* node = (listNode*)malloc(sizeof(listNode));
+	        node->key = key;
+            h->first->link = node;
+        }
+    } else if (h->first->key > key) {
+        //첫번째 노드의 키보다 작다면 맨 앞으로 와야하니까 inserFirst를 호출
+        insertFirst(h, key);
+    }else {
+        //순서를 돌아가면서 확인할것(while문)
+        listNode* node = (listNode*)malloc(sizeof(listNode));
+	    node->key = key;
+        //첫번째 노드를 담아옴 (이제 이 compareNode의 링크를 돌면서 적절한 위치를 탐색할거임)
+        listNode* compareNode = h->first;
+        while (1) {
+            if (compareNode->link->key > node->key) {
+                listNode* temp = compareNode->link;
+                compareNode->link = node;
+                node->link = temp;
+                break;
+            }else {
+                compareNode = compareNode->link;
+            }
+        }
+    }
 	return 0;
 }
 
