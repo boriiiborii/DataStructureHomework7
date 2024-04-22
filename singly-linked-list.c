@@ -44,6 +44,7 @@ int main()
 	headNode* headnode=NULL;
 
 	do{
+        printf("[----- [hwajinLee]  [2020037103] -----]\n");
 		printf("----------------------------------------------------------------\n");
 		printf("                     Singly Linked List                         \n");
 		printf("----------------------------------------------------------------\n");
@@ -196,7 +197,24 @@ int insertNode(headNode* h, int key) {
  * list에 key에 대한 노드하나를 추가
  */
 int insertLast(headNode* h, int key) {
-
+    if (h->first == NULL) {
+        //노드가 없는 상태라면 insertFirst와 같은 동작을 함으로 
+        insertFirst(h, key);
+    }else {
+         //순서를 돌아가면서 확인할것(while문)
+        listNode* node = (listNode*)malloc(sizeof(listNode));
+	    node->key = key;
+        //첫번째 노드를 담아옴 (이제 이 compareNode의 링크를 돌면서 적절한 위치를 탐색할거임)
+        listNode* compareNode = h->first;
+        while (1) {
+            if (compareNode->link == NULL) { //비교하는 노드의 링크가 없을 경우(마지막 노드라면) 마지막 노드의 링크에 생성한 노드 연결
+                compareNode->link = node;
+                break;
+            }else {
+                compareNode = compareNode->link;
+            }
+        }
+    }
 	return 0;
 }
 
