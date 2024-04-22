@@ -246,7 +246,6 @@ int deleteNode(headNode* h, int key) {
 	return 0;
 
 }
-
 /**
  * list의 마지막 노드 삭제
  */
