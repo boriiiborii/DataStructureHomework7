@@ -9,6 +9,7 @@
 
 #include<stdio.h>
 #include<stdlib.h>
+#include<stdbool.h>
 
 /* 필요한 헤더파일 추가 */
 
@@ -242,10 +243,50 @@ int deleteFirst(headNode* h) {
  * list에서 key에 대한 노드 삭제
  */
 int deleteNode(headNode* h, int key) {
+    //삭제가 되었는지 확인하는 변수
+    bool deleted = false;
 
-	return 0;
+    //노드key의 값이 들어온 key와 같을때 해당 노드를 삭제한다고 생각하고 풀었습니다.
+    //키값이 같으 노드가 많다면 그 중 가장 앞에 있는 노드를 지우는 로직으로 진행하였습니다.
+    if (h->first == NULL) {
+        //노드가 없다면 프린트띄우고 넘어가기
+        printf("삭제할 노드가 없어요");
+    } else if (h->first->link == NULL) {
+        //노드가 하나밖에 없다면 하나의 노드가 해당하는 key값을 가지고 있는지 체크 후 삭제 결정
+        if (h->first->key == key) {
+            free(h->first);
+            h->first = NULL;
+        } else {
+            printf("해당하는 키값을 가진 노드가 없어요");
+        }
+    } else {
+        //노드가 두개 이상일때
+        //첫 노드는 우선 확인
 
+         //첫번째 노드의 키값이 동일할 경우
+        if (h->first->key == key) {
+            listNode* temp = h->first;
+            h->first = h->first->link;
+            free(temp);
+        } else {
+            listNode* compareNode = h->first;
+             //같은 키값을 가진 노드를 탐색
+            while (compareNode->link != NULL) {
+                if (compareNode->link->key == key) {
+                    //찾았으면 삭제하고 free
+                    listNode* temp = compareNode->link;
+                    compareNode->link = temp->link;
+                    free(temp);
+                    break;
+                } else {
+                    compareNode = compareNode->link;
+                }
+            }
+        }
+    }
+    return 0;
 }
+
 /**
  * list의 마지막 노드 삭제
  */
