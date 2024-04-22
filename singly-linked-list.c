@@ -319,9 +319,33 @@ int deleteLast(headNode* h) {
  * 리스트의 링크를 역순으로 재 배치
  */
 int invertList(headNode* h) {
+    if (h == NULL || h->first == NULL || h->first->link == NULL) {
+        // 리스트가 비어있거나 노드가 하나만 있는 경우에는 아무것도 하지 않음
+        return 0;
+    } else {
+        listNode* previousNode = NULL;
+        listNode* currentNode = h->first;
+        listNode* nextNode;
 
-	return 0;
+        while (currentNode != NULL) {
+            // 다음 노드를 임시로 저장
+            nextNode = currentNode->link;
+            
+            // 현재 노드의 링크를 이전 노드로 설정하여 노드를 역순으로 바꿈
+            currentNode->link = previousNode;
+
+            // 이전 노드와 현재 노드 업데이트
+            previousNode = currentNode;
+            currentNode = nextNode;
+        }
+
+        // 리스트의 첫 번째 노드를 역순으로 바뀐 리스트의 첫 번째 노드로 설정
+        h->first = previousNode;
+
+        return 0;
+    }
 }
+
 
 
 void printList(headNode* h) {
