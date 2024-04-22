@@ -181,16 +181,12 @@ int insertNode(headNode* h, int key) {
 	    node->key = key;
         //첫번째 노드를 담아옴 (이제 이 compareNode의 링크를 돌면서 적절한 위치를 탐색할거임)
         listNode* compareNode = h->first;
-        while (1) {
-            if (compareNode->link->key > node->key) {
-                listNode* temp = compareNode->link;
-                compareNode->link = node;
-                node->link = temp;
-                break;
-            }else {
-                compareNode = compareNode->link;
-            }
+         while (compareNode->link != NULL && compareNode->link->key < key) {
+            compareNode = compareNode->link;
         }
+        // 새로운 노드를 삽입
+        node->link = compareNode->link;
+        compareNode->link = node;
     }
 	return 0;
 }
